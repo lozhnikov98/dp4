@@ -4,7 +4,7 @@
 {% load censor %}
 <!-- Название у нас будет Product -->
 {% block title %}
-News
+{{ Post.title|censor }}
 {% endblock title %}
 
 
