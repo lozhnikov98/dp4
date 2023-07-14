@@ -1,0 +1,12 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+All authors
+{% endblock title %}
+
+{% block content %}
+{% for author in Authors %}
+{{ author.authorUser }}
+{% endfor %}
+{% endblock content %}

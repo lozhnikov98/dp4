@@ -1,0 +1,26 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load censor %}
+
+{% block title %}
+All News
+{% endblock title %}
+
+
+{% block content %}
+<table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Дата Публикации</td>
+        <td>Текст</td>
+    </tr>
+    {% for post in Posts %}
+    <tr>
+        <td>{{ post.title|censor }}</td>
+        <td>{{ post.dateCreation }}</td>
+        <td>{{ post.text|truncatechars:20|censor }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
