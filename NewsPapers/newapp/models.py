@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -20,7 +21,8 @@ class Author(models.Model):
         self.ratingAuthor = pRat *3 + cRat
         self.save()
 
-
+    def __str__(self):
+        return self.authorUser.username
 
 
 class Category(models.Model):
@@ -57,13 +59,16 @@ class Post(models.Model):
     def preview(self):
         return self.text[0:123] + '...'
 
+    def __str__(self):
+        return self.title.title()
 
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
 
 
 class Comment(models.Model):
@@ -80,3 +85,6 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+    def __str__(self):
+        return self.text.title()
