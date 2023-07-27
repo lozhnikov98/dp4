@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from .models import *
 from django.urls import reverse_lazy
@@ -34,19 +36,22 @@ class PostList(ListView):
     # Переопределяем функцию получения списка товаров
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('newapp.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('newapp.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('newapp.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
@@ -76,3 +81,10 @@ class PostSearch(ListView):
         # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
         return context
+
+
+# class PostCreate(LoginRequiredMixin, CreateView):
+#     raise_exception = True
+#     form_class = PostForm
+#     model = Post
+#     template_name = 'post_edit.html'

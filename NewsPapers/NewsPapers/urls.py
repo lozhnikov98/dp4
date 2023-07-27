@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-   path('admin/', admin.site.urls),
-   path('pages/', include('django.contrib.flatpages.urls')),
-   path('news/', include('newapp.urls'))
+    path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),  # Оставили только allauth
+    path("news/", include("newapp.urls")),
 ]
