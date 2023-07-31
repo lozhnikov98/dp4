@@ -12,9 +12,9 @@ All News
 {% block content %}
     <h2>Все Новости</h2>
     <hr>
-    {% if perms.newapp.add_post %}
-    <a href="{% url 'post_create' %}">Добавить пост</a>
-    {% endif %}
+<!--    {% if perms.newapp.add_post %}-->
+<!--    <a href="{% url 'post_create' %}">Добавить пост</a>-->
+<!--    {% endif %}-->
     {% if Posts %}
         <table align="center">
             <tr>
@@ -28,12 +28,14 @@ All News
             </tr>
             {% for post in Posts %}
             <tr>
-                <td>{{ post.title|censor }}</td>
+                <td>
+                    <a href="{% url 'post_detail' post.id %}">{{ post.title|censor }}</a>
+                </td>
                 <td>{{ post.dateCreation }}</td>
                 <td>{{ post.text|truncatechars:20|censor }}</td>
                 <td>
                     {% for cat in post.postCategory.all %}
-                        {{ cat.name }}
+                         <a href="{% url 'category_list' cat.id %}">{{ cat.name }}</a>
                     {% endfor %}
                 </td>
                 <td>

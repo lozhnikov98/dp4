@@ -1,5 +1,8 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from django.db.models import Exists, OuterRef
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
 from .models import *
 from django.urls import reverse_lazy
@@ -65,26 +68,48 @@ class PostSearch(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        # Получаем обычный запрос
         queryset = super().get_queryset()
-        # Используем наш класс фильтрации.
-        # self.request.GET содержит объект QueryDict, который мы рассматривали
-        # в этом юните ранее.
-        # Сохраняем нашу фильтрацию в объекте класса,
-        # чтобы потом добавить в контекст и использовать в шаблоне.
         self.filterset = PostFilter(self.request.GET, queryset)
-        # Возвращаем из функции отфильтрованный список товаров
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
         return context
 
 
-# class PostCreate(LoginRequiredMixin, CreateView):
-#     raise_exception = True
-#     form_class = PostForm
-#     model = Post
-#     template_name = 'post_edit.html'
+class CategoryListView(ListView):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.postCategory = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(postCategory=self.postCategory).order_by('-dateCreation')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.postCategory.subscribers.all()
+        context['postCategory'] = self.postCategory
+        return context
+
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    postCategory = Category.objects.get(id=pk)
+    postCategory.subscribers.add(user)
+
+    message = "Вы успешно подписались на рассылку публикаций категории"
+    return render(request, 'subscribe.html', {'postCategory': postCategory, 'message': message})
+
+
+@login_required
+def unsubscribe(request, pk):
+    user = request.user
+    postCategory = Category.objects.get(id=pk)
+    postCategory.subscribers.remove(user)
+
+    message = "Вы успешно отписались от рассылки публикаций категории"
+    return render(request, 'subscribe.html', {'postCategory': postCategory, 'message': message})
