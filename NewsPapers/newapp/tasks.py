@@ -28,7 +28,7 @@ def send_notifications(preview, pk, title, subscribers):
 
 
 @shared_task
-def my_job():
+def weekly_newsletter():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(dateCreation__gte=last_week)

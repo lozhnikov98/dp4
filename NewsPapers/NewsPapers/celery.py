@@ -10,8 +10,10 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'action_every_monday_8am': {
-        'task': 'newapp.tasks.my_job',
-        'schedule': crontab(),
+    'send_mail_every_week': {
+        'task': 'newapp.tasks.weekly_newsletter',
+        'schedule': crontab(hour=8, minute=00, day_of_week=1),
     },
 }
+
+#

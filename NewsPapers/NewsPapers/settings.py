@@ -160,8 +160,8 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
 SITE_URL = 'http://127.0.0.1:8000/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "lozhnikovser@yandex.ru"
@@ -186,8 +186,4 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-# broker_url = 'redis://default:Qf5iTowDZpqCRwCfPjbtAC5W0UdZ0Q3Z@redis-17265.c302.asia-northeast1-1.gce.cloud.redislabs.com:17265'
-# result_backend = 'redis://default:Qf5iTowDZpqCRwCfPjbtAC5W0UdZ0Q3Z@redis-17265.c302.asia-northeast1-1.gce.cloud.redislabs.com:17265'
-# accept_content = ['application/json']
-# task_serializer = 'json'
-# result_serializer = 'json'
+TIME_ZONE = 'Asia/Barnaul'
