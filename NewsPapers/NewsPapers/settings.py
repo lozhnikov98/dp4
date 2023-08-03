@@ -179,3 +179,15 @@ ADMINS = (
 APSCHEDULAR_DATETIME_FORMAT = 'N j, Y, f: s a'
 
 APSCHEDULAR_RUN_NOW_TIMEOUT = 25
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# broker_url = 'redis://default:Qf5iTowDZpqCRwCfPjbtAC5W0UdZ0Q3Z@redis-17265.c302.asia-northeast1-1.gce.cloud.redislabs.com:17265'
+# result_backend = 'redis://default:Qf5iTowDZpqCRwCfPjbtAC5W0UdZ0Q3Z@redis-17265.c302.asia-northeast1-1.gce.cloud.redislabs.com:17265'
+# accept_content = ['application/json']
+# task_serializer = 'json'
+# result_serializer = 'json'

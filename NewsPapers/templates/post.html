@@ -9,6 +9,11 @@
 
 
 {% block content %}
+<td>{% for cat in Post.postCategory.all %}
+        {{ cat.name }}
+    {% endfor %}
+</td>
+<hr>
 <td>{{ Post.title|censor }}</td>
 <hr>
 <td>{{ Post.text|censor }}</td>

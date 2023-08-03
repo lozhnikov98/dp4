@@ -16,27 +16,27 @@ from newapp.models import Post, Category
 logger = logging.getLogger(__name__)
 
 
-def my_job():
-    today = datetime.datetime.now()
-    last_week = today - datetime.timedelta(days=7)
-    posts = Post.objects.filter(dateCreation__gte=last_week)
-    categories = set(posts.values_list('postCategory__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
-    html_content = render_to_string(
-        'daily_post.html',
-        {
-            'link': f'http://127.0.0.1:8000/',
-            'posts': posts,
-        }
-    )
-    msg = EmailMultiAlternatives(
-        subject='Публикации за неделю',
-        body='',
-        from_email=None,
-        to=subscribers
-    )
-    msg.attach_alternative(html_content, 'text/html')
-    msg.send()
+# def my_job():
+#     today = datetime.datetime.now()
+#     last_week = today - datetime.timedelta(days=7)
+#     posts = Post.objects.filter(dateCreation__gte=last_week)
+#     categories = set(posts.values_list('postCategory__name', flat=True))
+#     subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
+#     html_content = render_to_string(
+#         'daily_post.html',
+#         {
+#             'link': f'http://127.0.0.1:8000/',
+#             'posts': posts,
+#         }
+#     )
+#     msg = EmailMultiAlternatives(
+#         subject='Публикации за неделю',
+#         body='',
+#         from_email=None,
+#         to=subscribers
+#     )
+#     msg.attach_alternative(html_content, 'text/html')
+#     msg.send()
 
 
 @util.close_old_connections
