@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,15 @@ class PostDetail(DetailView):
     model = Post
     context_object_name = 'Post'
     template_name = 'post.html'
+
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'Post-{self.kwargs["pk"]}',
+                        None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'Post-{self.kwargs["pk"]}', obj)
+            return obj
 
 
 class PostList(ListView):

@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from django.urls import path
 from .views import (AuthorList, PostDetail,
                     PostList, PostCreate,
